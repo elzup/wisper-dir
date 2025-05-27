@@ -6,6 +6,28 @@ from pathlib import Path
 from openai import OpenAI
 
 
+whitelist = list(
+    filter(
+        lambda x: x.strip() != "",
+        (
+            """
+"""
+        )
+        .strip()
+        .split("\n"),
+    )
+)
+
+
+def is_in_list(x):
+    """
+    ファイル名がnew_listに含まれているかチェックする関数
+    """
+    if len(whitelist) == 0:
+        return True
+    return any(x.name in item for item in whitelist)
+
+
 def transcribe_file(client, audio_path: Path, model: str = "whisper-1") -> str:
     """
     Whisper API にファイルを送信し、プレーンテキストで結果を返す。
@@ -40,7 +62,8 @@ def main():
 
     with open(args.output_tsv, "w", encoding="utf-8") as fo:
         fo.write("filename\ttranscription\n")
-        for ogg in ogg_files:
+        for ogg in filter(is_in_list, ogg_files):
+
             print(f"Transcribing {ogg.name} ...")
             text = transcribe_file(client, ogg, model=args.model)
             # 改行をスペースに置換
