@@ -6,26 +6,20 @@ from pathlib import Path
 from openai import OpenAI
 
 
-whitelist = list(
-    filter(
-        lambda x: x.strip() != "",
-        (
-            """
-"""
-        )
-        .strip()
-        .split("\n"),
-    )
-)
+whitelist = [
+    line
+    for line in """
+
+    """.strip().splitlines()
+    if line.strip()
+]
 
 
 def is_in_list(x):
     """
     ファイル名がnew_listに含まれているかチェックする関数
     """
-    if len(whitelist) == 0:
-        return True
-    return any(x.name in item for item in whitelist)
+    return not whitelist or any(x.name in item for item in whitelist)
 
 
 def transcribe_file(client, audio_path: Path, model: str = "whisper-1") -> str:
