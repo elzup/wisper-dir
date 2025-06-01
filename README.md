@@ -1,62 +1,49 @@
-#n OGG Batch Transcriber (using Whisper)
+# n OGG Batch Transcriber (using Whisper)
 
-指定されたディレクトリ内の OGG 音声ファイルを一括で文字起こしし、結果を TSV ファイルに出力する Python スクリプトです。OpenAI の Whisper モデルを利用しています。
+This is a Python script that batch transcribes OGG audio files in a specified directory and outputs the results to a TSV file. It utilizes OpenAI's Whisper model.
 
-## 必要なもの
+## Requirements
 
 - Python 3.x
 - Whisper (openai-whisper)
+- OpenAI API Key
 
-## インストール
+```
+export OPENAI_API_KEY=""
+```
 
-1.  **Whisper のインストール:**
-    ```bash
-    pip install -U openai-whisper
-    ```
-    (環境によっては追加の依存関係が必要になる場合があります。詳細は [Whisper GitHub リポジトリ](https://github.com/openai/whisper#setup) を参照してください。)
-
-## 使い方
-
-コマンドラインから `main.py` を実行します。
+## Usage
 
 ```bash
 python main.py <input_directory> <output_tsv_file> [options]
 ```
 
-**引数:**
+**Arguments:**
 
-- `input_directory`: 文字起こし対象の OGG ファイルが含まれるディレクトリのパス (必須)
-- `output_tsv_file`: 文字起こし結果を出力する TSV ファイルのパス (必須)
+- `input_directory`: Path to the directory containing the OGG files to be transcribed (required)
+- `output_tsv_file`: Path to the TSV file to output the transcription results (required)
 
-**オプション:**
+**Options:**
 
-- `--model <model_name>`: 使用する Whisper モデル名 (デフォルト: `small`)
-  - 利用可能なモデル: `tiny`, `base`, `small`, `medium`, `large`
-- `--lang <language_code>`: 文字起こしする言語のコード (デフォルト: `ja`)
-  - 例: `ja` (日本語), `en` (英語)
+- `--model <model_name>`: Whisper model name to use (default: `small`)
+  - Available models: `tiny`, `base`, `small`, `medium`, `large`
+- `--lang <language_code>`: Language code for the language to be transcribed (default: `ja`)
+  - Example: `ja` (Japanese), `en` (English)
 
-**実行例:**
+**Example Usage:**
 
 ```bash
-# data/ogg ディレクトリ内の OGG ファイルを medium モデルで日本語文字起こしし、result.tsv に出力
+# Transcribe OGG files in the data/ogg directory using the medium model for Japanese and output to result.tsv
 python main.py data/ogg result.tsv --model medium --lang ja
 ```
 
-## TSV 出力形式
+## TSV Output Format
 
-出力される TSV ファイルは以下の形式です (タブ区切り)。
+The output TSV file will be in the following format (tab-separated).
 
 ```
 filename	transcription
-audio1.ogg	これは最初の音声ファイルです。
-audio2.ogg	これは二番目の音声ファイルの文字起こし結果です。
+audio1.ogg	This is the first audio file.
+audio2.ogg	This is the transcription result of the second audio file.
 ...
 ```
-
-## Contributing
-
-貢献に関するガイドラインです。(必要に応じて追記)
-
-## License
-
-このプロジェクトのライセンス情報です。(必要に応じて追記)
