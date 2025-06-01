@@ -1,4 +1,5 @@
 # wisper-dir
+
 > Batch Transcriber (using Whisper)
 
 This is a Python script that batch transcribes OGG audio files in a specified directory and outputs the results to a TSV file. It utilizes OpenAI's Whisper model.
@@ -19,9 +20,11 @@ export OPENAI_API_KEY=""
 python main.py <input_directory> <output_tsv_file> [options]
 ```
 
+support file types `.ogg .wav .mp3 .aac`
+
 **Arguments:**
 
-- `input_directory`: Path to the directory containing the OGG files to be transcribed (required)
+- `input_directory`: Path to the directory containing the meida files to be transcribed (required)
 - `output_tsv_file`: Path to the TSV file to output the transcription results (required)
 
 **Options:**

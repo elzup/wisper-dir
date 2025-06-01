@@ -35,10 +35,10 @@ def transcribe_file(client, audio_path: Path, model: str = "whisper-1") -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="ディレクトリ内の .ogg を一括文字起こしして TSV 出力"
+        description="ディレクトリ内の音声ファイルを一括文字起こしして TSV 出力"
     )
     parser.add_argument(
-        "input_dir", help="OGG ファイルが格納されたディレクトリ"
+        "input_dir", help="音声ファイルが格納されたディレクトリ"
     )
     parser.add_argument("output_tsv", help="出力 TSV ファイル名")
     parser.add_argument(
@@ -49,20 +49,25 @@ def main():
     # OpenAI クライアント初期化
     client = OpenAI()
 
-    ogg_files = sorted(Path(args.input_dir).glob("*.ogg"))
-    if not ogg_files:
-        print(f"*.ogg ファイルが見つかりません: {args.input_dir}")
+    audio_files = sorted(
+        list(Path(args.input_dir).glob("*.ogg"))
+        + list(Path(args.input_dir).glob("*.wav"))
+        + list(Path(args.input_dir).glob("*.mp3"))
+        + list(Path(args.input_dir).glob("*.aac"))
+    )
+    if not audio_files:
+        print(f"音声ファイルが見つかりません: {args.input_dir}")
         return
 
     with open(args.output_tsv, "w", encoding="utf-8") as fo:
         fo.write("filename\ttranscription\n")
-        for ogg in filter(is_in_list, ogg_files):
+        for audio_file in filter(is_in_list, audio_files):
 
-            print(f"Transcribing {ogg.name} ...")
-            text = transcribe_file(client, ogg, model=args.model)
+            print(f"Transcribing {audio_file.name} ...")
+            text = transcribe_file(client, audio_file, model=args.model)
             # 改行をスペースに置換
             text = text.replace("\n", " ").strip()
-            fo.write(f"{ogg.name}\t{text}\n")
+            fo.write(f"{audio_file.name}\t{text}\n")
 
     print(f"完了: {args.output_tsv}")
 
