@@ -17,7 +17,7 @@ export OPENAI_API_KEY=""
 ## Usage
 
 ```bash
-python main.py <input_directory> <output_tsv_file> [options]
+python wisper-by-openai.py <input_directory> <output_tsv_file> [options]
 ```
 
 support file types `.ogg .wav .mp3 .aac`
@@ -38,7 +38,7 @@ support file types `.ogg .wav .mp3 .aac`
 
 ```bash
 # Transcribe OGG files in the data/ogg directory using the medium model for Japanese and output to result.tsv
-python main.py data/ogg result.tsv --model medium --lang ja
+python wisper-by-openai.py data/ogg result.tsv --model medium --lang ja
 ```
 
 ## TSV Output Format
