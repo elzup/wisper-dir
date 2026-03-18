@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import argparse
 import json
 import os
@@ -57,7 +54,7 @@ def get_openai_client() -> OpenAI:
     if not api_key:
         print(
             "OPENAI_API_KEY が見つかりません。\n"
-            "  環境変数に設定するか、`--setup` で初期設定してください。",
+            "  環境変数に設定するか、`wisper-dir --setup` で初期設定してください。",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -84,7 +81,8 @@ def transcribe_file(client, audio_path: Path, model: str = "whisper-1") -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="ディレクトリ内の音声ファイルを一括文字起こしして TSV 出力"
+        prog="wisper-dir",
+        description="ディレクトリ内の音声ファイルを一括文字起こしして TSV 出力",
     )
     parser.add_argument(
         "input_dir", nargs="?", help="音声ファイルが格納されたディレクトリ"
