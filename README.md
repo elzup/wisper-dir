@@ -7,12 +7,17 @@ This is a Python script that batch transcribes OGG audio files in a specified di
 ## Requirements
 
 - Python 3.x
-- Whisper (openai-whisper)
+- openai (Python package)
 - OpenAI API Key
 
+## Setup
+
+```bash
+# 初回セットアップ: API キーを ~/.config/wisper-dir/config.json に保存
+python wisper-by-openai.py --setup
 ```
-export OPENAI_API_KEY=""
-```
+
+環境変数 `OPENAI_API_KEY` が設定されている場合はそちらが優先されます。
 
 ## Usage
 
