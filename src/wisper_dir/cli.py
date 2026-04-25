@@ -10,6 +10,10 @@ from openai import OpenAI
 
 CONFIG_DIR = Path.home() / ".config" / "wisper-dir"
 CONFIG_FILE = CONFIG_DIR / "config.json"
+DEFAULT_MODELS = {
+    "openai": "whisper-1",
+    "mlx": "mlx-community/whisper-large-v3-turbo",
+}
 
 
 whitelist = [
@@ -166,9 +170,7 @@ def main():
         "input_dir", nargs="?", help="音声ファイルが格納されたディレクトリ"
     )
     parser.add_argument("output_tsv", nargs="?", help="出力 TSV ファイル名")
-    parser.add_argument(
-        "--model", default="whisper-1", help="Whisper モデル名 (例: whisper-1)"
-    )
+    parser.add_argument("--model", default=None, help="Whisper モデル名")
     parser.add_argument(
         "--backend",
         choices=["openai", "mlx"],
@@ -212,6 +214,7 @@ def main():
     if not args.input_dir or not args.output_tsv:
         parser.error("input_dir と output_tsv は必須です")
 
+    model = args.model or DEFAULT_MODELS[args.backend]
     language = None if args.language == "auto" else args.language
     prompt = args.prompt
     if args.katakana_reading and not prompt:
@@ -250,12 +253,12 @@ def main():
 
         try:
             for audio_file in filter(is_in_list, audio_files):
-                print(f"Transcribing {audio_file.name} [{args.backend}/{args.model}] ...")
+                print(f"Transcribing {audio_file.name} [{args.backend}/{model}] ...")
                 started_at = time.perf_counter()
                 text = transcribe_file(
                     backend=args.backend,
                     audio_path=audio_file,
-                    model=args.model,
+                    model=model,
                     language=language,
                     prompt=prompt,
                     client=client,
@@ -271,7 +274,7 @@ def main():
 
                 if bench is not None:
                     bench.write(
-                        f"{audio_file.name}\t{args.backend}\t{args.model}\t"
+                        f"{audio_file.name}\t{args.backend}\t{model}\t"
                         f"{elapsed_sec:.3f}\t{len(text)}\n"
                     )
         finally:

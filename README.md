@@ -48,7 +48,7 @@ Supported file types: `.ogg .wav .mp3 .aac`
 
 **Options:**
 
-- `--model <model_name>`: Whisper model name to use (default: `whisper-1`)
+- `--model <model_name>`: Whisper model name to use (default: `whisper-1` for `openai`, `mlx-community/whisper-large-v3-turbo` for `mlx`)
 - `--backend <openai|mlx>`: transcription backend (default: `openai`)
 - `--language <lang|auto>`: language code (default: `ja`)
 - `--prompt <text>`: initial prompt passed to the transcription backend
